@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 const Part = (props) => {
   return(
     <p>
-    {props.part} {props.exercises}
+    {props.part.name} {props.part.exercises}
   </p>
   )
 
@@ -20,9 +20,9 @@ const Header = (props) => {
 const Content = (props) => {
   return(
     <div>
-      <Part part={props.part1.name} exercises={props.part1.exercises} />
-      <Part part={props.part2.name} exercises={props.part2.exercises} />
-      <Part part={props.part3.name} exercises={props.part3.exercises} />
+      <Part part={props.part1} />
+      <Part part={props.part2} />
+      <Part part={props.part3} />
     </div>)
 }
 

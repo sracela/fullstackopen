@@ -21,6 +21,7 @@ const Buttons = ({ handlers, statistics }) => {
 const Statistic = props => <p>{props.name} {props.results}</p>
 
 const Statistics = (props) => {
+  if (props.clicked) {
   return(
     <div>
       <Statistic name={props.statistics[0].name} results={props.statistics[0].results} />
@@ -30,12 +31,15 @@ const Statistics = (props) => {
       <Statistic name={props.metrics[1].name} results={props.metrics[1].results} />
       <Statistic name={props.metrics[2].name} results={props.metrics[2].results} />
     </div>)
+  } else{
+    return <p>No feedback given</p>
+  }
+
 }
 
 const App = () => {
   // save clicks of each button to its own state
-
-
+  const [clicked, setClicked] = useState(false)
   const [statistics, setStatistics] = useState([
     {
       name: 'good',
@@ -69,16 +73,19 @@ const App = () => {
     const newStatistics = [...statistics]
     newStatistics[0].results = statistics[0].results + 1
     setStatistics(newStatistics)
+    setClicked(true)
   }
   const handleNeutralClick = () => {
     const newStatistics = [...statistics]
     newStatistics[1].results = statistics[1].results + 1
     setStatistics(newStatistics)
+    setClicked(true)
   }
   const handleBadClick = () => {
     const newStatistics = [...statistics]
     newStatistics[2].results = statistics[2].results + 1
     setStatistics(newStatistics)
+    setClicked(true)
   }
 
   const handlers = [
@@ -93,7 +100,7 @@ const App = () => {
       <Header text="give feedback" />
       <Buttons handlers={handlers} statistics={statistics} />
       <Header text="statistics" />
-      <Statistics statistics={statistics} metrics={metrics} />
+      <Statistics statistics={statistics} metrics={metrics} clicked={clicked}/>
     </div>
   )
 }

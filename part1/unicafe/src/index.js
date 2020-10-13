@@ -18,20 +18,24 @@ const Buttons = ({ handlers, statistics }) => {
   )
 }
 
-const Statistic = props => <p>{props.text} {props.value}</p>
+const Statistic = props => <tr><td>{props.text}</td><td>{props.value}</td></tr>
 
 const Statistics = (props) => {
   if (props.clicked) {
   return(
     <div>
-      <Statistic text={props.statistics[0].name} value={props.statistics[0].results} />
-      <Statistic text={props.statistics[1].name} value={props.statistics[1].results} />
-      <Statistic text={props.statistics[2].name} value={props.statistics[2].results} />
-      <Statistic text={props.metrics[0].name} value={props.metrics[0].results} />
-      <Statistic text={props.metrics[1].name} value={props.metrics[1].results} />
-      <Statistic text={props.metrics[2].name} value={props.metrics[2].results} />
-    </div>)
-  } else{
+      <table>
+      <tbody>
+        <Statistic text={props.statistics[0].name} value={props.statistics[0].results} />
+        <Statistic text={props.statistics[1].name} value={props.statistics[1].results} />
+        <Statistic text={props.statistics[2].name} value={props.statistics[2].results} />
+        <Statistic text={props.metrics[0].name} value={props.metrics[0].results} />
+        <Statistic text={props.metrics[1].name} value={props.metrics[1].results} />
+        <Statistic text={props.metrics[2].name} value={props.metrics[2].results} />
+      </tbody>
+    </table>
+    </div>
+    )} else{
     return <p>No feedback given</p>
   }
 

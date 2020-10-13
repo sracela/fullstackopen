@@ -18,14 +18,17 @@ const Buttons = ({ handlers, statistics }) => {
   )
 }
 
-const Statistic = props => <p>{props.statistic.name} {props.statistic.results}</p>
+const Statistic = props => <p>{props.name} {props.results}</p>
 
 const Statistics = (props) => {
   return(
     <div>
-      <Statistic statistic={props.statistics[0]} />
-      <Statistic statistic={props.statistics[1]} />
-      <Statistic statistic={props.statistics[2]} />
+      <Statistic name={props.statistics[0].name} results={props.statistics[0].results} />
+      <Statistic name={props.statistics[1].name} results={props.statistics[1].results} />
+      <Statistic name={props.statistics[2].name} results={props.statistics[2].results} />
+      <Statistic name={props.metrics[0].name} results={props.metrics[0].results} />
+      <Statistic name={props.metrics[1].name} results={props.metrics[1].results} />
+      <Statistic name={props.metrics[2].name} results={props.metrics[2].results} />
     </div>)
 }
 
@@ -47,8 +50,22 @@ const App = () => {
     {
       name: 'bad',
       results: 0
-    }
+    },
   ])
+  const metrics = [
+    {
+      name: 'all',
+      results: statistics[0].results + statistics[1].results + statistics[2].results
+    },
+    {
+      name: 'average',
+      results: (statistics[0].results - statistics[2].results) / (statistics[0].results + statistics[1].results + statistics[2].results)
+    },
+    {
+      name: 'positive',
+      results: '' + statistics[0].results / (statistics[0].results + statistics[1].results + statistics[2].results) * 100 + ' %'
+    }
+  ]
 
   const handleGoodClick = () => {
     const newStatistics = [...statistics]
@@ -72,12 +89,13 @@ const App = () => {
     handleBadClick
   ]
 
+
   return (
     <div>
       <Header text="give feedback" />
       <Buttons handlers={handlers} statistics={statistics} />
       <Header text="statistics" />
-      <Statistics statistics={statistics} />
+      <Statistics statistics={statistics} metrics={metrics} />
     </div>
   )
 }

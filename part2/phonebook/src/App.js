@@ -12,7 +12,14 @@ const App = () => {
     const newContact = {
       name: newName
     }
-    setPersons(persons.concat(newContact))
+    const b = persons.find((person) => person.name === newContact.name)
+
+    if(b === undefined){
+      setPersons(persons.concat(newContact))
+    }else{
+      alert(`${newName} is already added to phonebook`)
+    }
+    setNewName('')
   }
 
   const handleNameChange = (event) => {

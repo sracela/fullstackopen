@@ -17,7 +17,7 @@ useEffect(() => {
       setCountries(response.data)
     })
 }, [])
-console.log('render', countries.length, 'notes')
+// console.log('render', countries.length, 'notes')
 
 const handleFilterChange = (event) => {
   setNewFilter(event.target.value)

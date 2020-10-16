@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Country from './Country';
+import Weather from './Weather';
 
 const Button = (props) => (
   <button onClick={props.handleClick}>
@@ -21,8 +22,8 @@ const Countries = ({ countriesToShow }) => {
       {countriesToShow.map((country, index) => {
         return (
           <div key={country.name}>
-
             <Country show={show[index]} country={country} />
+            <Weather show={show[index]} capital={country.capital} />
             <Button show={show[index]} handleClick={() => setToShow(index)} />
           </div>
         )

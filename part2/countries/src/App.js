@@ -16,8 +16,9 @@ useEffect(() => {
       console.log('promise fulfilled')
       setCountries(response.data)
     })
+
 }, [])
-// console.log('render', countries.length, 'notes')
+console.log('render', countries)
 
 const handleFilterChange = (event) => {
   setNewFilter(event.target.value)
@@ -31,7 +32,7 @@ return(
   <div>
     <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
     {countriesToShow.length > 10 ? <p>Too many matches, specify another filter</p> : 
-      countriesToShow.length === 1 ? <Country country={countriesToShow[0]} /> : <Countries countriesToShow={countriesToShow} /> 
+      countriesToShow.length === 1 ? <Country show={true} country={countriesToShow[0]} /> : <Countries countriesToShow={countriesToShow} /> 
       }
   </div>
 )

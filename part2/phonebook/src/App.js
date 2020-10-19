@@ -12,7 +12,6 @@ const App = () => {
   const [ newFilter, setNewFilter] = useState('')
 
   useEffect(() => {
-    console.log('effect')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
@@ -20,7 +19,6 @@ const App = () => {
         setPersons(response.data)
       })
   }, [])
-  console.log('render', persons.length, 'notes')
 
   const addContact = (event) => {
     event.preventDefault()
@@ -29,13 +27,21 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    const b = persons.find((person) => person.name === newContact.name)
+    const b = persons.find((person) => person.name.toLowerCase() === newContact.name.toLowerCase())
 
     if(b === undefined){
-      setPersons(persons.concat(newContact))
+      // setPersons(persons.concat(newContact))
+    axios
+    .post('http://localhost:3001/persons', newContact)
+    .then(response => {
+      console.log('promise fulfilled')
+      setPersons(persons.concat(response.data))
+    })
+
     }else{
       alert(`${newName} is already added to phonebook`)
     }
+    
     setNewName('')
     setNewNumber('')
   }

@@ -46,6 +46,25 @@ const App = () => {
 
   }
 
+  const deleteContactNumber = id => {
+    if (window.confirm(`delete contact number ${id} ?`)){ 
+      // console.log('delete person', id)
+      contactService
+        .deleteObject(id)
+        .then(response => {
+          console.log(response)
+          setPersons(persons.filter(n => n.id !== id))
+        })
+        // .catch(error => {
+        //   alert(
+        //     `the note '${note.content}' was already deleted from server`
+        //   )
+        //   setNotes(notes.filter(n => n.id !== id))
+        // })
+
+    }
+  }
+
   const handleNameChange = (event) => {
     // console.log(event.target.value)
     setNewName(event.target.value)
@@ -74,7 +93,7 @@ const App = () => {
           newNumber={newNumber}
           handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-        <Persons personsToShow={personsToShow} />
+        <Persons personsToShow={personsToShow} deleteContactNumber={deleteContactNumber} />
     </div>
   )
 }

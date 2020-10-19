@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons'
-import axios from 'axios'
+import contactService from './services/contacts'
+
+// import axios from 'axios'
 
 
 const App = () => {
-  const [persons, setPersons] = useState([])
+  const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    contactService
+      .getAll()
+      .then(initialContacts => {
+        setPersons(initialContacts)
       })
   }, [])
 
@@ -31,19 +32,18 @@ const App = () => {
 
     if(b === undefined){
       // setPersons(persons.concat(newContact))
-    axios
-    .post('http://localhost:3001/persons', newContact)
-    .then(response => {
-      console.log('promise fulfilled')
-      setPersons(persons.concat(response.data))
-    })
+      contactService
+      .create(newContact)
+      .then(returnedContact => {
+        setPersons(persons.concat(returnedContact))    
+        setNewName('')
+        setNewNumber('')
+      })
 
     }else{
       alert(`${newName} is already added to phonebook`)
     }
-    
-    setNewName('')
-    setNewNumber('')
+
   }
 
   const handleNameChange = (event) => {

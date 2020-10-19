@@ -41,26 +41,37 @@ const App = () => {
       })
 
     }else{
-      alert(`${newName} is already added to phonebook`)
+      // alert(`${newName} is already added to phonebook`)
+      const person = persons.find(n => n.name.toLowerCase() === newName.toLowerCase())
+      const changedPerson = { ...person, number: newNumber }
+      if (window.confirm(` ${person.name} is already added to the phonebook, replace the old number with a new one ?`)){ 
+        // console.log('delete')    
+        contactService
+          .update(person.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
+          })
+          .catch(error => {
+            alert(
+              `the contat '${person.name}' was already deleted from server`
+            )
+            setPersons(persons.filter(n => n.id !== person.id))
+          })
+      }
     }
 
   }
 
   const deleteContactNumber = id => {
-    if (window.confirm(`delete contact number ${id} ?`)){ 
+    const person = persons.find(n => n.id === id)
+    if (window.confirm(`delete contact ${person.name} ?`)){ 
       // console.log('delete person', id)
       contactService
         .deleteObject(id)
         .then(response => {
-          console.log(response)
+          // console.log(response)
           setPersons(persons.filter(n => n.id !== id))
         })
-        // .catch(error => {
-        //   alert(
-        //     `the note '${note.content}' was already deleted from server`
-        //   )
-        //   setNotes(notes.filter(n => n.id !== id))
-        // })
 
     }
   }

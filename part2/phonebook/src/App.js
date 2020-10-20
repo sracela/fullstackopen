@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import contactService from './services/contacts'
-
-// import axios from 'axios'
 
 
 const App = () => {
@@ -12,6 +11,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     contactService
@@ -35,20 +35,30 @@ const App = () => {
       contactService
       .create(newContact)
       .then(returnedContact => {
+        setSuccessMessage(
+          `Added '${returnedContact.name}'`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
         setPersons(persons.concat(returnedContact))    
         setNewName('')
         setNewNumber('')
       })
 
     }else{
-      // alert(`${newName} is already added to phonebook`)
       const person = persons.find(n => n.name.toLowerCase() === newName.toLowerCase())
       const changedPerson = { ...person, number: newNumber }
       if (window.confirm(` ${person.name} is already added to the phonebook, replace the old number with a new one ?`)){ 
-        // console.log('delete')    
         contactService
           .update(person.id, changedPerson)
           .then(returnedPerson => {
+            setSuccessMessage(
+              `Updated '${person.name}'`
+            )
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 5000)
             setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
           })
           .catch(error => {
@@ -69,7 +79,12 @@ const App = () => {
       contactService
         .deleteObject(id)
         .then(response => {
-          // console.log(response)
+          setSuccessMessage(
+            `Deleted '${person.name}'`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
           setPersons(persons.filter(n => n.id !== id))
         })
 
@@ -95,6 +110,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+        <Notification message={successMessage} />
         <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
         <PersonForm 

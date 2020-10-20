@@ -3,6 +3,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons'
 import Notification from './components/Notification'
+import Error from './components/Error'
 import contactService from './services/contacts'
 
 
@@ -12,6 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
   const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     contactService
@@ -62,9 +64,12 @@ const App = () => {
             setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
           })
           .catch(error => {
-            alert(
-              `the contat '${person.name}' was already deleted from server`
+            setErrorMessage(
+              `The contact '${person.name}' has already been removed from server`
             )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
             setPersons(persons.filter(n => n.id !== person.id))
           })
       }
@@ -86,6 +91,15 @@ const App = () => {
             setSuccessMessage(null)
           }, 5000)
           setPersons(persons.filter(n => n.id !== id))
+        })
+        .catch(error => {
+          setErrorMessage(
+            `The contact '${person.name}' has already been removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          setPersons(persons.filter(n => n.id !== person.id))
         })
 
     }
@@ -111,6 +125,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
         <Notification message={successMessage} />
+        <Error message={errorMessage} />
         <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
         <PersonForm 

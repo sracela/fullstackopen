@@ -31,18 +31,18 @@ const Blog = mongoose.model('Blog', blogSchema)
 app.use(cors())
 app.use(express.json())
 
-// app.post('/api/blogs', (request, response) => {
-//   const blog = new Blog(request.body)
+app.post('/api/blogs', (request, response) => {
+	const blog = new Blog(request.body)
 
-//   blog
-//     .save()
-//     .then(result => {
-//       response.status(201).json(result)
-//     })
-// })
+	blog
+		.save()
+		.then(result => {
+			response.status(201).json(result)
+		})
+})
 
 app.get('/', (request, response) => {
-	response.send('<h1>Hello World!</h1>')
+	response.send('<h1>Blog List</h1>')
 })
 
 app.get('/api/blogs', (request, response) => {
@@ -53,7 +53,7 @@ app.get('/api/blogs', (request, response) => {
 		})
 })
 
-const PORT = 3003
+const PORT = process.env.PORT
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`)
 })

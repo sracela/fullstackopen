@@ -1,14 +1,15 @@
-/* eslint-disable no-undef */
+
 /* eslint-disable no-unused-vars */
-const http = require('http')
+const config = require('./utils/config')
 const express = require('express')
 const app = express()
-require('dotenv').config()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const blogsRouter = require('./controllers/blogs')
 
-const url = process.env.MONGODB_URI
+// const logger = require('./utils/logger')
+
+const url = config.MONGODB_URI
 
 console.log('connecting to', url)
 
@@ -27,7 +28,7 @@ app.use(express.json())
 
 app.use('/api/blogs', blogsRouter)
 
-const PORT = process.env.PORT
+const PORT = config.PORT
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`)
 })

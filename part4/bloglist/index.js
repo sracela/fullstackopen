@@ -2,7 +2,7 @@
 const http = require('http')
 const express = require('express')
 const app = express()
-// const cors = require('cors')
+const cors = require('cors')
 // const mongoose = require('mongoose')
 
 // const blogSchema = new mongoose.Schema({
@@ -17,7 +17,7 @@ const app = express()
 // const mongoUrl = 'mongodb://localhost/bloglist'
 // mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
-// app.use(cors())
+app.use(cors())
 app.use(express.json())
 
 // app.get('/api/blogs', (request, response) => {

@@ -7,18 +7,18 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const blogsRouter = require('./controllers/blogs')
 
-// const logger = require('./utils/logger')
+const logger = require('./utils/logger')
 
 const url = config.MONGODB_URI
 
-console.log('connecting to', url)
+logger.info('connecting to', url)
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 	.then(result => {
-		console.log('connected to MongoDB')
+		logger.info('connected to MongoDB')
 	})
 	.catch((error) => {
-		console.log('error connecting to MongoDB:', error.message)
+		logger.info('error connecting to MongoDB:', error.message)
 	})
 
 
@@ -30,5 +30,5 @@ app.use('/api/blogs', blogsRouter)
 
 const PORT = config.PORT
 app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`)
+	logger.info(`Server running on port ${PORT}`)
 })

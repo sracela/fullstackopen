@@ -6,6 +6,7 @@ const app = express()
 require('dotenv').config()
 const cors = require('cors')
 const mongoose = require('mongoose')
+const Blog = require('./models/blog')
 
 const url = process.env.MONGODB_URI
 
@@ -19,14 +20,14 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
 		console.log('error connecting to MongoDB:', error.message)
 	})
 
-const blogSchema = new mongoose.Schema({
-	title: String,
-	author: String,
-	url: String,
-	likes: Number
-})
+// const blogSchema = new mongoose.Schema({
+// 	title: String,
+// 	author: String,
+// 	url: String,
+// 	likes: Number
+// })
 
-const Blog = mongoose.model('Blog', blogSchema)
+// const Blog = mongoose.model('Blog', blogSchema)
 
 app.use(cors())
 app.use(express.json())

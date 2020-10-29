@@ -1,5 +1,4 @@
-console.log("asdjosda")
-
+/* eslint-disable no-unused-vars */
 const http = require('http')
 const express = require('express')
 const app = express()
@@ -40,29 +39,29 @@ app.use(express.json())
 // })
 
 let blogs = [
-  {
-    title: "Hola",
-    author: "Sara",
-    url: "sracela.com",
-    likes: 5
-  },
-  {
-    title: "Mundo",
-    author: "Cela",
-    url: "sracela.com",
-    likes: 2
-  }
+	{
+		title: 'Hola',
+		author: 'Sara',
+		url: 'sracela.com',
+		likes: 5
+	},
+	{
+		title: 'Mundo',
+		author: 'Cela',
+		url: 'sracela.com',
+		likes: 2
+	}
 ]
 
 app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
+	response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/blogs', (request, response) => {
-  response.json(blogs)
+	response.json(blogs)
 })
 
 const PORT = 3003
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+	console.log(`Server running on port ${PORT}`)
 })

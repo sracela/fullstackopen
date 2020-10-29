@@ -1,21 +1,47 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 const http = require('http')
 const express = require('express')
 const app = express()
+require('dotenv').config()
 const cors = require('cors')
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
+
+const url = process.env.MONGODB_URI
+
+console.log('connecting to', url)
+
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+	.then(result => {
+		console.log('connected to MongoDB')
+	})
+	.catch((error) => {
+		console.log('error connecting to MongoDB:', error.message)
+	})
 
 // const blogSchema = new mongoose.Schema({
-//   title: String,
-//   author: String,
-//   url: String,
-//   likes: Number
+// 	title: String,
+// 	author: String,
+// 	url: String,
+// 	likes: Number
 // })
 
 // const Blog = mongoose.model('Blog', blogSchema)
 
 // const mongoUrl = 'mongodb://localhost/bloglist'
 // mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+
+// const blog = new Blog({
+// 	title: 'HTML is Easy',
+// 	author: 'me',
+// 	url: 'sracle.com',
+// 	likes: 5
+// })
+
+// blog.save().then(result => {
+//   console.log('blog saved!')
+//   mongoose.connection.close()
+// })
 
 app.use(cors())
 app.use(express.json())

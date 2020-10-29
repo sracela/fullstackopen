@@ -19,40 +19,17 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
 		console.log('error connecting to MongoDB:', error.message)
 	})
 
-// const blogSchema = new mongoose.Schema({
-// 	title: String,
-// 	author: String,
-// 	url: String,
-// 	likes: Number
-// })
+const blogSchema = new mongoose.Schema({
+	title: String,
+	author: String,
+	url: String,
+	likes: Number
+})
 
-// const Blog = mongoose.model('Blog', blogSchema)
-
-// const mongoUrl = 'mongodb://localhost/bloglist'
-// mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-
-// const blog = new Blog({
-// 	title: 'HTML is Easy',
-// 	author: 'me',
-// 	url: 'sracle.com',
-// 	likes: 5
-// })
-
-// blog.save().then(result => {
-//   console.log('blog saved!')
-//   mongoose.connection.close()
-// })
+const Blog = mongoose.model('Blog', blogSchema)
 
 app.use(cors())
 app.use(express.json())
-
-// app.get('/api/blogs', (request, response) => {
-//   Blog
-//     .find({})
-//     .then(blogs => {
-//       response.json(blogs)
-//     })
-// })
 
 // app.post('/api/blogs', (request, response) => {
 //   const blog = new Blog(request.body)
@@ -64,27 +41,16 @@ app.use(express.json())
 //     })
 // })
 
-let blogs = [
-	{
-		title: 'Hola',
-		author: 'Sara',
-		url: 'sracela.com',
-		likes: 5
-	},
-	{
-		title: 'Mundo',
-		author: 'Cela',
-		url: 'sracela.com',
-		likes: 2
-	}
-]
-
 app.get('/', (request, response) => {
 	response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/blogs', (request, response) => {
-	response.json(blogs)
+	Blog
+		.find({})
+		.then(blogs => {
+			response.json(blogs)
+		})
 })
 
 const PORT = 3003

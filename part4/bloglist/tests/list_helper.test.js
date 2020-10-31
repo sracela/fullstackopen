@@ -87,9 +87,51 @@ describe('total likes', () => {
 })
 
 describe('favorite blog', () => {
+	const listWithEqualBlogs = [
+		{
+			_id: '5a422aa71b54a676234d17f8',
+			title: 'Go To Statement Considered Harmful',
+			author: 'Edsger W. Dijkstra',
+			url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+			likes: 5,
+			__v: 0
+		},
+		{
+			_id: '5a422bc61b54a676234d17fc',
+			title: 'Type wars',
+			author: 'Robert C. Martin',
+			url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+			likes: 2,
+			__v: 0
+		},
+		{
+			_id: '5a422b891b54a676234d17fa',
+			title: 'First class tests',
+			author: 'Robert C. Martin',
+			url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+			likes: 5,
+			__v: 0
+		}
+	]
+
+	test('of empty list is zero', () => {
+		expect(listHelper.favoriteBlog([])).toBe(0)
+	})
+
+
+	test('when list has only one blog, equals the likes of that', () => {
+		const result = listHelper.favoriteBlog(listWithOneBlog)
+		expect(result).toEqual(listWithOneBlog[0])
+	})
+
 	test('of a bigger list is calculated right', () => {
 		const result = listHelper.favoriteBlog(listWithManyBlogs)
 		expect(result).toEqual(listWithManyBlogs[2])
+	})
+
+	test('if there are many top favorites, it returns one of them.', () => {
+		const result = listHelper.favoriteBlog(listWithEqualBlogs)
+		expect(result).toEqual(listWithEqualBlogs[2])
 	})
 
 })

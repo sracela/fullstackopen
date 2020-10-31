@@ -22,6 +22,10 @@ const favoriteBlog = blogs => {
 		: blogs.reduce(findFav, 0)
 }
 
+// const mostBlogs = blogs => {
+
+// }
+
 module.exports = {
 	dummy,
 	totalLikes,

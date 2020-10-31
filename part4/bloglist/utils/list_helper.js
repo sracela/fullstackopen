@@ -1,3 +1,6 @@
+// Load the core build.
+var _ = require('lodash')
+
 // eslint-disable-next-line no-unused-vars
 const dummy = (blogs) => {
 	return 1
@@ -22,12 +25,18 @@ const favoriteBlog = blogs => {
 		: blogs.reduce(findFav, 0)
 }
 
-// const mostBlogs = blogs => {
-
-// }
+const mostBlogs = blogs => {
+	return blogs.length === 0
+		? 0
+		: {
+			'author': _.maxBy(_.entries(_.countBy(blogs, 'author')), _.last)[0],
+			'blogs': _.maxBy(_.entries(_.countBy(blogs, 'author')), _.last)[1]
+		}
+}
 
 module.exports = {
 	dummy,
 	totalLikes,
-	favoriteBlog
+	favoriteBlog,
+	mostBlogs
 }

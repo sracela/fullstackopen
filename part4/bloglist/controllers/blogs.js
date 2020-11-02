@@ -11,12 +11,14 @@ blogsRouter.post('/', (request, response) => {
 		})
 })
 
-blogsRouter.get('/', (request, response) => {
-	Blog
-		.find({})
-		.then(blogs => {
-			response.json(blogs)
-		})
+blogsRouter.get('/', async (request, response) => {
+	const blogs = await Blog.find({})
+	response.json(blogs)
+	// Blog
+	// 	.find({})
+	// 	.then(blogs => {
+	// 		response.json(blogs)
+	// 	})
 })
 
 

@@ -91,8 +91,29 @@ test('if likes property is missing from the request, it will default to the valu
 
 	const blogsAtEnd = await helper.blogsInDb()
 	const blog_no_likes = blogsAtEnd.find(n => n.title === 'Prueba likes')
-	console.log(blog_no_likes)
 	expect(blog_no_likes.likes).toBe(0)
+})
+
+test(' if the title and url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request', async () => {
+	const newBlogNoTitle = {
+		author: 'saritdsaa',
+		url: 'ñsaddsadapq.com'
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(newBlogNoTitle)
+		.expect(400)
+
+	const newBlogNoUrl = {
+		title: 'Prueba likes',
+		author: 'saritdsaa'
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(newBlogNoUrl)
+		.expect(400)
 })
 
 afterAll(() => {

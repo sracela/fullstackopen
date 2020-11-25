@@ -4,6 +4,8 @@ const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
 const Blog = require('../models/blog')
 
 beforeEach(async () => {
@@ -50,7 +52,7 @@ describe('addition of a new blog', () => {
 			title: 'Prueba middleware',
 			author: 'saritdsaa',
 			url: 'ñsaddsadapq.com',
-			likes: 10
+			likes: 10,
 		}
 
 		await api
@@ -161,6 +163,41 @@ describe('updating a blog', () => {
 
 		const updatedBlog = blogsAtEnd.find(r => r.id === blogToUpdate.id)
 		expect(updatedBlog.likes).toBe(blogToUpdate.likes)
+	})
+
+})
+
+
+describe('when there is initially one user in db', () => {
+	beforeEach(async () => {
+		await User.deleteMany({})
+
+		const passwordHash = await bcrypt.hash('sekret', 10)
+		const user = new User({ username: 'root', passwordHash })
+
+		await user.save()
+	})
+
+	test('creation succeeds with a fresh username', async () => {
+		const usersAtStart = await helper.usersInDb()
+
+		const newUser = {
+			username: 'mluukkai',
+			name: 'Matti Luukkainen',
+			password: 'salainen',
+		}
+
+		await api
+			.post('/api/users')
+			.send(newUser)
+			.expect(200)
+			.expect('Content-Type', /application\/json/)
+
+		const usersAtEnd = await helper.usersInDb()
+		expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+
+		const usernames = usersAtEnd.map(u => u.username)
+		expect(usernames).toContain(newUser.username)
 	})
 
 })

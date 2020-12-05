@@ -47,17 +47,41 @@ describe('when there is initially some blogs saved', () => {
 	})
 })
 describe('addition of a new blog', () => {
+
+	beforeEach(async () => {
+		await User.deleteMany({})
+
+		const passwordHash = await bcrypt.hash('sekret', 10)
+		const user = new User({ username: 'rootTest', passwordHash })
+		await user.save()
+	})
 	test('a valid blog can be added', async () => {
+		const login =
+		{
+			username: 'rootTest',
+			password: 'sekret'
+		}
+
+		const responseLogin = await api
+			.post('/api/login')
+			.send(login)
+			.expect(200)
+			.expect('Content-Type', /application\/json/)
+
+		const token = responseLogin.body.token
+		const authToken = `bearer ${token}`
+
 		const newBlog = {
-			title: 'Prueba middleware',
-			author: 'saritdsaa',
-			url: 'ñsaddsadapq.com',
-			likes: 10,
+			title: 'Created by rootTest',
+			author: 'rot',
+			url: 'prueba.com',
+			likes: 2,
 		}
 
 		await api
 			.post('/api/blogs')
 			.send(newBlog)
+			.set({ Authorization: authToken })
 			.expect(200)
 			.expect('Content-Type', /application\/json/)
 
@@ -69,20 +93,35 @@ describe('addition of a new blog', () => {
 		const likes = blogsAtEnd.map(n => n.likes)
 
 		expect(titles).toContain(
-			'Prueba middleware'
+			'Created by rootTest'
 		)
 		expect(authors).toContain(
-			'saritdsaa'
+			'rot'
 		)
 		expect(urls).toContain(
-			'ñsaddsadapq.com'
+			'prueba.com'
 		)
 		expect(likes).toContain(
-			10
+			2
 		)
 	})
 
 	test('if likes property is missing from the request, it will default to the value 0', async () => {
+		const login =
+		{
+			username: 'rootTest',
+			password: 'sekret'
+		}
+
+		const responseLogin = await api
+			.post('/api/login')
+			.send(login)
+			.expect(200)
+			.expect('Content-Type', /application\/json/)
+
+		const token = responseLogin.body.token
+		const authToken = `bearer ${token}`
+
 		const newBlog = {
 			title: 'Prueba likes',
 			author: 'saritdsaa',
@@ -92,6 +131,7 @@ describe('addition of a new blog', () => {
 		await api
 			.post('/api/blogs')
 			.send(newBlog)
+			.set({ Authorization: authToken })
 			.expect(200)
 			.expect('Content-Type', /application\/json/)
 
@@ -101,6 +141,21 @@ describe('addition of a new blog', () => {
 	})
 
 	test(' if the title and url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request', async () => {
+		const login =
+		{
+			username: 'rootTest',
+			password: 'sekret'
+		}
+
+		const responseLogin = await api
+			.post('/api/login')
+			.send(login)
+			.expect(200)
+			.expect('Content-Type', /application\/json/)
+
+		const token = responseLogin.body.token
+		const authToken = `bearer ${token}`
+
 		const newBlogNoTitle = {
 			author: 'saritdsaa',
 			url: 'ñsaddsadapq.com'
@@ -109,6 +164,7 @@ describe('addition of a new blog', () => {
 		await api
 			.post('/api/blogs')
 			.send(newBlogNoTitle)
+			.set({ Authorization: authToken })
 			.expect(400)
 
 		const newBlogNoUrl = {
@@ -119,7 +175,24 @@ describe('addition of a new blog', () => {
 		await api
 			.post('/api/blogs')
 			.send(newBlogNoUrl)
+			.set({ Authorization: authToken })
 			.expect(400)
+	})
+
+	test('adding a blog fails with the proper status code 401 Unauthorized if a token is not provided', async () => {
+		const newBlog = {
+			title: 'Blog without auth',
+			author: 'rot',
+			url: 'prueba.com',
+			likes: 60,
+		}
+
+		await api
+			.post('/api/blogs')
+			.send(newBlog)
+			.set({ Authorization: 'whatever' })
+			.expect(401)
+
 	})
 })
 

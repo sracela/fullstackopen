@@ -33,12 +33,8 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.get('/', async (request, response) => {
 	const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+	console.log(blogs)
 	response.json(blogs)
-	// Blog
-	// 	.find({})
-	// 	.then(blogs => {
-	// 		response.json(blogs)
-	// 	})
 })
 
 blogsRouter.put('/:id', async (request, response) => {

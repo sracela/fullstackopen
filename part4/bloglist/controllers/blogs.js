@@ -31,9 +31,37 @@ blogsRouter.post('/', async (request, response) => {
 	response.json(savedBlog.toJSON())
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => { 
+	const body = request.body
+
+	const blog = await Blog.findById(request.params.id);
+
+	console.log("dsad");
+	if (!blog) {
+		return response.status(404).end()
+	}
+
+	const comment = body.comment
+	blog.comments = blog.comments ? [...blog.comments, comment] : [comment]
+	// blog.comments?.concat(comment)
+	// const newBlog = {...blog, comments: blog.comments ? blog.comments.concat(comment) : [comment] }
+
+	// const blog = {
+	// 	title: body.title,
+	// 	author: body.author,
+	// 	url: body.url,
+	// 	likes: body.likes,
+	// 	comments: body.comments
+	// }
+
+	blog.save()
+	// await Blog.findByIdAndUpdate(request.params.id, newBlog, { new: true });
+	response.status(200).end()
+
+})
+
 blogsRouter.get('/', async (request, response) => {
 	const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
-	console.log(blogs)
 	response.json(blogs)
 })
 
